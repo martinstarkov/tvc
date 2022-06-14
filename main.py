@@ -47,7 +47,7 @@ class TVCSimulation():
             positions_z.append(self.position_z)
             angular_positions.append(np.rad2deg(self.angular_position))
             control_angle = self.pid.run(self.angular_position, self.time_step)
-        self.graph(times, positions_x, positions_z, angular_positions)
+        return times, positions_z, positions_x, angular_positions
             
     def get_physics(self, control_angle):
         if not hasattr(self, 'last_angle'): self.last_angle = control_angle        
@@ -77,9 +77,9 @@ class TVCSimulation():
         self.position_z += self.velocity_z * self.time_step
         self.angular_position += self.angular_velocity * self.time_step
 
-    def graph(self, t, x, z, theta):
+    def graph(self, ts, zs, xs, thetas):
         figure, axis = plt.subplots(1, 3)
-        axis[0].plot(t, x); axis[1].plot(t, z); axis[2].plot(t, theta)
+        axis[0].plot(ts, xs); axis[1].plot(ts, zs); axis[2].plot(ts, thetas)
         axis[0].set_title("X-position vs Time")
         axis[1].set_title("Z-position vs Time")
         axis[2].set_title("Theta vs Time")
@@ -93,4 +93,5 @@ if __name__ == "__main__":
                         acceleration_x=0, acceleration_z=0, angular_acceleration=0,
                         angle_limit=np.deg2rad(15), rate_limit=np.deg2rad(150),
                         K_p=0.07, K_i=0.01, K_d=0.01, pid_target=0, pid_min=-10, pid_max=10)
-    sim.loop()
+    t, zs, xs, thetas = sim.loop()
+    sim.graph(t, zs, xs, thetas)
