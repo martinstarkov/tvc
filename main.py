@@ -8,7 +8,6 @@ def clamp(value, lower, upper, msg=""):
     return value
 
 class PID():
-    # K_p [-], K_i [-], K_d [-], target [<>], min [<>], max [<>]
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
         
@@ -28,6 +27,7 @@ class TVCSimulation():
     # velocity_x [m / s], velocity_z [m / s], angular_velocity [rad / s]
     # acceleration_x [m / s^2], acceleration_z [m / s^2], angular_acceleration [rad / s^2]
     # angle_limit [rad], rate_limit [rad / s]
+    # K_p [-], K_i [-], K_d [-], pid_target [<>], pid_min [<>], pid_max [<>]
     def __init__(self, **kwargs):
         self.__dict__.update(**kwargs)
         assert self.stop_time > self.start_time
