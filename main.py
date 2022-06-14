@@ -88,9 +88,12 @@ class TVCSimulation():
         for i in range(self.steps):
             force_z, force_x, moment = self.get_physics(control_angle)
             self.apply_physics(force_z, force_x, moment)
+            
+            # Store values for graphing
             positions_x.append(self.position_x)
             positions_z.append(self.position_z)
             angular_positions.append(np.rad2deg(self.angular_position))
+            
             control_angle = self.pid.run(self.angular_position, self.time_step)
         self.graph(times, positions_x, positions_z, angular_positions)
             
@@ -108,10 +111,10 @@ class TVCSimulation():
         self.last_angle = control_angle
         return force_z, force_x, moment
     
-    def apply_physics(self, force_x, force_z, moment):
+    def apply_physics(self, force_z, force_x, moment):
         # Obtain accelerations in each dimension
-        acceleration_x = force_x / self.mass + self.gravity
         acceleration_z = force_z / self.mass
+        acceleration_x = force_x / self.mass + self.gravity
         angular_acceleration = moment / self.moment_of_inertia
         # Integrate acceleration in each dimension
         self.velocity_x += acceleration_x * self.time_step
@@ -124,15 +127,11 @@ class TVCSimulation():
 
     def graph(self, t, x, z, theta):
         figure, axis = plt.subplots(1, 3)
-        print(t)
-        print(x)
-        print(z)
-        print(theta)
         axis[0].plot(t, x)
-        axis[0].set_title("X-position vs Time")
         axis[1].plot(t, z)
-        axis[1].set_title("Z-position vs Time")
         axis[2].plot(t, theta)
+        axis[0].set_title("X-position vs Time")
+        axis[1].set_title("Z-position vs Time")
         axis[2].set_title("Theta vs Time")
         plt.show()
 
