@@ -46,6 +46,25 @@ class TVCSimulation():
             positions_x.append(self.position_x)
             positions_z.append(self.position_z)
             angular_positions.append(np.rad2deg(self.angular_position))
+            
+            # per axis:
+            
+            # a certain thrust that is set by us
+            # based on this thrust, search a look up table with K gains
+            # FETCH FROM SENSORS
+            # IN: theta, theta dot, z, z dot
+            # (K, S, E = Lqr(A, B, Q, R)) but precalculated from look up table
+            # e = x - xf # where x is state space vector [4x1], and xf is target vector [4x1]
+            # calculates optimal output (u)
+            # u = -K * e
+            # control_output = u [rad]
+            # OUT: theta control angle
+            # SEND TO: Servos
+            
+            # repeat for x/z
+            
+            # this does not include the vertical controller
+            
             control_angle = self.pid.run(self.angular_position, self.time_step)
         return times, positions_z, positions_x, angular_positions
             
@@ -86,7 +105,7 @@ class TVCSimulation():
         plt.show()
 
 if __name__ == "__main__":
-    sim = TVCSimulation(mass=1, moment_of_inertia=0.1, center_of_mass_to_tvc=0.5, thrust=12,
+    sim = TVCSimulation(mass=2.667, moment_of_inertia=0.01, center_of_mass_to_tvc=0.5, thrust=60,
                         time_step=0.1, start_time=0.0, stop_time=10.0, gravity=-9.81,
                         position_x=0, position_z=0, angular_position=0,
                         velocity_x=0, velocity_z=1, angular_velocity=0.5, 
