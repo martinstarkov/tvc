@@ -25,7 +25,6 @@ class TVCSimulation():
     # time_step [s], start_time [s], stop_time [s],gravity [m / s^2]
     # position_x [m], position_z [m], angular_position [rad]
     # velocity_x [m / s], velocity_z [m / s], angular_velocity [rad / s]
-    # acceleration_x [m / s^2], acceleration_z [m / s^2], angular_acceleration [rad / s^2]
     # angle_limit [rad], rate_limit [rad / s]
     # K_p [-], K_i [-], K_d [-], pid_target [<>], pid_min [<>], pid_max [<>]
     def __init__(self, **kwargs):
@@ -108,8 +107,7 @@ if __name__ == "__main__":
     sim = TVCSimulation(mass=2.667, moment_of_inertia=0.01, center_of_mass_to_tvc=0.5, thrust=60,
                         time_step=0.1, start_time=0.0, stop_time=10.0, gravity=-9.81,
                         position_x=0, position_z=0, angular_position=0,
-                        velocity_x=0, velocity_z=1, angular_velocity=0.5, 
-                        acceleration_x=0, acceleration_z=0, angular_acceleration=0,
+                        velocity_x=0, velocity_z=1, angular_velocity=0.5,
                         angle_limit=np.deg2rad(15), rate_limit=np.deg2rad(150),
                         K_p=0.07, K_i=0.01, K_d=0.01, pid_target=0, pid_min=-10, pid_max=10)
     t, zs, xs, thetas = sim.loop()
